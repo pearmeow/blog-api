@@ -19,8 +19,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Router middleware
 
-// TODO: Change when routers are implemented
-app.use("/", routes);
+app.use("/posts", routes.post);
+app.use("/users", routes.user);
 
 const PORT = 3000;
 
