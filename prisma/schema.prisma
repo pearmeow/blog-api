@@ -8,6 +8,33 @@ generator client {
     output   = "./generated/prisma"
 }
 
-model Example {
-    id Int @id @default(autoincrement())
+model Post {
+    id        Int       @id @default(autoincrement())
+    title     String
+    text      String
+    date      DateTime
+    published Boolean   @default(false)
+    author    User      @relation(references: [id], fields: [authorId])
+    authorId  Int
+    comments  Comment[]
+}
+
+model Comment {
+    id       Int      @id @default(autoincrement())
+    date     DateTime
+    text     String
+    post     Post     @relation(references: [id], fields: [postId])
+    postId   Int
+    author   User     @relation(references: [id], fields: [authorId])
+    authorId Int
+}
+
+model User {
+    id       Int       @id @default(autoincrement())
+    username String    @unique
+    password String
+    isAuthor Boolean   @default(false)
+    isAdmin  Boolean   @default(false)
+    posts    Post[]
+    comments Comment[]
 }
