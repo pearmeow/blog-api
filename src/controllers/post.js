@@ -18,7 +18,7 @@ export const post = [
     validator.textBodyFactory("title", "Title", 1, 50),
     validator.textBodyFactory("text", "Post", 1),
     validator.date,
-    validator.published,
+    validator.boolParamFactory("published", "Published"),
     validator.validateResults,
     async (req, res) => {
         // TODO: get userId from user and authorize (check author status)
@@ -36,7 +36,7 @@ export const putId = [
     validator.textBodyFactory("title", "Title", 1, 50),
     validator.textBodyFactory("text", "Post", 1),
     validator.date,
-    validator.published,
+    validator.boolParamFactory("published", "Published"),
     validator.validateResults,
     async (req, res) => {
         // TODO: check author status with userId and check post author to

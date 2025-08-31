@@ -1,4 +1,4 @@
-import { body, param } from "express-validator";
+import { body, param, validationResult } from "express-validator";
 
 export const idParamFactory = (fieldName) => {
     return param(fieldName)
@@ -8,7 +8,7 @@ export const idParamFactory = (fieldName) => {
 
 export const textBodyFactory = (fieldName, actualName, min, max) => {
     return body(fieldName)
-        .isString({ min, max })
+        .isLength({ min, max })
         .withMessage(
             `${actualName} must have between ${min} and ${max} characters`,
         );
@@ -16,11 +16,43 @@ export const textBodyFactory = (fieldName, actualName, min, max) => {
 
 export const date = body("date").isDate().withMessage("Date must be a date");
 
-export const published = body("published")
-    .isBoolean({ strict: true })
-    .withMessage("Published must be true or false");
+export const boolParamFactory = (fieldName, actualName) => {
+    return body(fieldName)
+        .isBoolean({ strict: true })
+        .withMessage(`${actualName} must be true or false`);
+};
 
-export username = body("username").custom()
+export const username = body("username")
+    .custom((value) => {
+        if (/ /.test(value)) {
+            throw Error();
+        }
+        return true;
+    })
+    .withMessage("Username must not contain spaces")
+    .isLength({ min: 1, max: 32 })
+    .withMessage("Username must be from 8 to 32 characters long");
+
+export const password = [
+    body("password")
+        .custom((value) => {
+            if (/ /.test(value)) {
+                throw Error();
+            }
+            return true;
+        })
+        .withMessage("Password must not contain spaces")
+        .isLength({ min: 8, max: 32 })
+        .withMessage("Password must be from 8 to 32 characters long"),
+    body("confirm")
+        .custom((value, { req }) => {
+            if (req.body.password !== value) {
+                throw Error;
+            }
+            return true;
+        })
+        .withMessage("Passwords must match"),
+];
 
 export const validateResults = (req, res) => {
     const errors = validationResult(req);
