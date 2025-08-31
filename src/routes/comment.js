@@ -1,5 +1,5 @@
-const { Router } = require("express");
-const { comment } = require("../controllers");
+import { Router } from "express";
+import { comment } from "../controllers";
 const router = Router();
 
 router.get("/", comment.get);
@@ -11,4 +11,4 @@ router.put("/:commentId", comment.putId);
 router.delete("/", comment.del);
 router.delete("/:commentId", comment.delId);
 
-module.exports = router;
+export default router;

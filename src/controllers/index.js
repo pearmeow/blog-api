@@ -1,8 +1,8 @@
-const post = require("./post");
-const comment = require("./comment");
-const user = require("./user");
+import post from "./post";
+import comment from "./comment";
+import user from "./user";
 
-module.exports = {
+export default {
     post,
     comment,
     user,

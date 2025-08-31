@@ -1,6 +1,6 @@
-const { Router } = require("express");
-const comments = require("./comment");
-const { post } = require("../controllers");
+import { Router } from "express";
+import comments from "./comment";
+import { post } from "../controllers";
 
 const router = Router();
 
@@ -14,4 +14,4 @@ router.delete("/", post.del);
 router.delete("/:postId", post.delId);
 router.use("/comments", comments);
 
-module.exports = router;
+export default router;

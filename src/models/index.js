@@ -1,3 +1,3 @@
-const db = require("./queries");
+import db from "./queries";
 
-module.exports = db;
+export default db;

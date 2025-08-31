@@ -1,18 +1,18 @@
-const { PrismaClient } = require("../../generated/prisma");
-const db = require("./queries");
-
-const client = new PrismaClient();
+import client from "./client";
+import db from "./queries";
 
 async function main() {
-    // await client.user.deleteMany();
-    // await client.file.deleteMany();
-    // await client.folder.deleteMany();
-    // await db.createUser("pearmeow", await hashPassword("meowmeow"));
-    // await db.createUser("mahdi", await hashPassword("imstupid"));
-    // await db.createUser("tahrim", await hashPassword("imnotstupid"));
-    // console.log(await client.folder.findMany());
-    // console.log(await client.file.findMany());
-    // console.log(await client.user.findMany());
+    const deleted = await client.user.deleteMany();
+    console.log(deleted);
+    await db.createUser("Pear", "meowmeow");
+    await db.createUser("Pea", "meowmeow");
+    await db.createUser("Pe", "meowmeow");
+    await db.createUser("P", "meowmeow");
+    const users = await db.readUser();
+    const singleton = await db.readUser(12);
+    console.log("ye olde separator -------------");
+    console.log(users);
+    console.log(singleton);
 }
 
 main();

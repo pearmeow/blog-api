@@ -1,7 +1,7 @@
-const post = require("./post");
-const user = require("./user");
+import post from "./post";
+import user from "./user";
 
-module.exports = {
+export default {
     post,
     user,
 };

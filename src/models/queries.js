@@ -1,4 +1,4 @@
-const client = require("./client");
+import client from "./client";
 
 const createPost = async (authorId, title, text, date, published) => {
     return await client.post.create({
@@ -130,7 +130,7 @@ const deleteUser = async (id) => {
     });
 };
 
-module.exports = {
+export default {
     createPost,
     readPost,
     updatePost,
