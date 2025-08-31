@@ -46,9 +46,39 @@ const deletePost = async (id) => {
     });
 };
 
-const createComment = async () => {};
-const readComment = async () => {};
-const updateComment = async () => {};
+const createComment = async (postId, authorId, text) => {
+    return await client.comment.create({
+        data: {
+            postId,
+            authorId,
+            text,
+        },
+    });
+};
+
+const readComment = async (id) => {
+    return await client.comment.findUnique({
+        where: {
+            id,
+        },
+        include: {
+            author: true,
+        },
+    });
+};
+
+const updateComment = async (id, text, date) => {
+    return await client.comment.update({
+        where: {
+            id,
+        },
+        data: {
+            text,
+            date,
+            edited: true,
+        },
+    });
+};
 const deleteComment = async () => {};
 
 const createUser = async (username, password) => {
