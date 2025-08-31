@@ -1,26 +1,65 @@
 import db from "../models/index.js";
 import { hashPassword } from "../utils/authenticate.js";
+import * as validator from "../middleware/validator.js";
 
+// TODO: Figure out if this is useless
 export const get = async (req, res) => {
     res.json(await db.readUser());
 };
 
-export const getId = async (req, res) => {
-    const { id } = req.body;
-    res.json(await db.readUser(id));
-};
+// TODO: Figure out if this is useless
+export const getId = [
+    validator.idParamFactory("userId"),
+    validator.validateResults,
+    async (req, res) => {
+        const { userId } = req.params;
+        res.json(await db.readUser(Number(userId)));
+    },
+];
 
-export const post = async (req, res) => {
-    const { username, password } = req.body;
-    res.json(await db.createUser(username, await hashPassword(password)));
-};
+export const post = [
+    validator.username,
+    validator.password,
+    validator.validateResults,
+    async (req, res) => {
+        const { username, password } = req.body;
+        res.json(await db.createUser(username, await hashPassword(password)));
+    },
+];
 
-export const putId = async (req, res) => {
-    const { id, password, isAuthor, isAdmin } = req.body;
-    res.json(await db.updateUser(id, password, isAuthor, isAdmin));
-};
+// TODO: Give back a token for authenticating?
+export const postUsername = [
+    validator.username,
+    validator.password,
+    validator.validateResults,
+    async (req, res) => {
+        const { username, password } = req.body;
+        res.json(await db.createUser(username, await hashPassword(password)));
+    },
+];
 
-export const delId = async (req, res) => {
-    const { id } = req.body;
-    res.json(await db.deleteUser(id));
-};
+// TODO: validate passcodes for isAuthor and isAdmin to promote user status
+// must be logged in to use this route
+// maybe separate out password or make it unchangeable so it's not
+// coupled with privileges
+export const putId = [
+    validator.idParamFactory("userId"),
+    validator.password,
+    validator.boolParamFactory("isAuthor", "Author status"),
+    validator.boolParamFactory("isAdmin", "Admin status"),
+    validator.validateResults,
+    async (req, res) => {
+        const { userId } = req.params;
+        const { password, isAuthor, isAdmin } = req.body;
+        res.json(await db.updateUser(userId, password, isAuthor, isAdmin));
+    },
+];
+
+// TODO: validate if user is admin so deleting is allowed
+export const delId = [
+    validator.idParamFactory("userId"),
+    async (req, res) => {
+        const { userId } = req.params;
+        res.json(await db.deleteUser(userId));
+    },
+];
