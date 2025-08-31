@@ -14,7 +14,7 @@ model Post {
     text      String
     date      DateTime
     published Boolean   @default(false)
-    author    User      @relation(references: [id], fields: [authorId])
+    author    User      @relation(references: [id], fields: [authorId], onDelete: Cascade)
     authorId  Int
     comments  Comment[]
 }
@@ -23,9 +23,9 @@ model Comment {
     id       Int      @id @default(autoincrement())
     date     DateTime
     text     String
-    post     Post     @relation(references: [id], fields: [postId])
+    post     Post     @relation(references: [id], fields: [postId], onDelete: Cascade)
     postId   Int
-    author   User     @relation(references: [id], fields: [authorId])
+    author   User     @relation(references: [id], fields: [authorId], onDelete: Cascade)
     authorId Int
 }
 
