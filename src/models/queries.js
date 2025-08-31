@@ -1,11 +1,12 @@
 const client = require("./client");
 
-const createPost = async (title, text, authorId, published = false) => {
+const createPost = async (authorId, title, text, date, published) => {
     return await client.post.create({
         data: {
+            authorId,
             title,
             text,
-            authorId,
+            date,
             published,
         },
     });
@@ -23,7 +24,7 @@ const readPost = async (id) => {
     });
 };
 
-const updatePost = async (id, title, text, published) => {
+const updatePost = async (id, title, text, date, published) => {
     return await client.post.update({
         where: {
             id,
@@ -31,6 +32,7 @@ const updatePost = async (id, title, text, published) => {
         data: {
             title,
             text,
+            date,
             published,
         },
     });
@@ -49,10 +51,47 @@ const readComment = async () => {};
 const updateComment = async () => {};
 const deleteComment = async () => {};
 
-const createUser = async () => {};
-const readUser = async () => {};
-const updateUser = async () => {};
-const deleteUser = async () => {};
+const createUser = async (username, password) => {
+    return await client.user.create({
+        data: {
+            username,
+            password,
+        },
+    });
+};
+
+const readUser = async (id) => {
+    return await client.user.findUnique({
+        where: {
+            id,
+        },
+        include: {
+            posts: true,
+            comments: true,
+        },
+    });
+};
+
+const updateUser = async (id, password, isAuthor, isAdmin) => {
+    return await client.user.update({
+        where: {
+            id,
+        },
+        data: {
+            password,
+            isAuthor,
+            isAdmin,
+        },
+    });
+};
+
+const deleteUser = async (id) => {
+    return await client.user.delete({
+        where: {
+            id,
+        },
+    });
+};
 
 module.exports = {
     createPost,

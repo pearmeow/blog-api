@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "public"."Comment" ALTER COLUMN "date" SET DEFAULT CURRENT_TIMESTAMP;
+
+-- AlterTable
+ALTER TABLE "public"."Post" ALTER COLUMN "date" SET DEFAULT CURRENT_TIMESTAMP;

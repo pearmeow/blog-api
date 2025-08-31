@@ -12,7 +12,7 @@ model Post {
     id        Int       @id @default(autoincrement())
     title     String
     text      String
-    date      DateTime
+    date      DateTime  @default(now())
     published Boolean   @default(false)
     author    User      @relation(references: [id], fields: [authorId], onDelete: Cascade)
     authorId  Int
@@ -21,7 +21,7 @@ model Post {
 
 model Comment {
     id       Int      @id @default(autoincrement())
-    date     DateTime
+    date     DateTime @default(now())
     text     String
     post     Post     @relation(references: [id], fields: [postId], onDelete: Cascade)
     postId   Int
