@@ -13,7 +13,7 @@ const createPost = async (authorId, title, text, date, published) => {
 };
 
 const readPost = async (id) => {
-    return await client.post.findUnique({
+    return await client.post.findMany({
         where: {
             id,
         },
@@ -57,7 +57,7 @@ const createComment = async (postId, authorId, text) => {
 };
 
 const readComment = async (id) => {
-    return await client.comment.findUnique({
+    return await client.comment.findMany({
         where: {
             id,
         },
@@ -98,7 +98,7 @@ const createUser = async (username, password) => {
 };
 
 const readUser = async (id) => {
-    return await client.user.findUnique({
+    return await client.user.findMany({
         where: {
             id,
         },
