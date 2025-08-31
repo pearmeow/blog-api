@@ -1,4 +1,4 @@
-import db from "../models";
+import db from "../models/index.js";
 
 const get = async (req, res) => {
     res.send(await db.readPost());

@@ -1,4 +1,4 @@
-import client from "./client";
+import client from "./client.js";
 
 const createPost = async (authorId, title, text, date, published) => {
     return await client.post.create({

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { comment } from "../controllers";
+import { comment } from "../controllers/index.js";
 const router = Router();
 
 router.get("/", comment.get);

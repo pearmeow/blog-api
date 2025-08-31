@@ -1,5 +1,5 @@
-import client from "./client";
-import db from "./queries";
+import client from "./client.js";
+import db from "./queries.js";
 
 async function main() {
     const deleted = await client.user.deleteMany();
