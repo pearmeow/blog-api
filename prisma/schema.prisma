@@ -13,7 +13,6 @@ model Post {
     title     String
     text      String
     date      DateTime  @default(now())
-    edited   Boolean  @default(false)
     published Boolean   @default(false)
     author    User      @relation(references: [id], fields: [authorId], onDelete: Cascade)
     authorId  Int
