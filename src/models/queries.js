@@ -79,7 +79,14 @@ const updateComment = async (id, text, date) => {
         },
     });
 };
-const deleteComment = async () => {};
+
+const deleteComment = async (id) => {
+    return await client.comment.delete({
+        where: {
+            id,
+        },
+    });
+};
 
 const createUser = async (username, password) => {
     return await client.user.create({
