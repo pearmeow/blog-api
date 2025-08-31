@@ -56,10 +56,11 @@ export const createComment = async (postId, authorId, text) => {
     });
 };
 
-export const readComment = async (id) => {
+export const readComment = async (id, postId) => {
     return await client.comment.findMany({
         where: {
             id,
+            postId,
         },
         include: {
             author: true,
