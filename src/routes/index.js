@@ -1,4 +1,4 @@
 import post from "./post.js";
 import user from "./user.js";
 
-export default { post, user };
+export { post, user };

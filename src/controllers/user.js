@@ -1,21 +1,26 @@
 import db from "../models/index.js";
+import { hashPassword } from "../utils/authenticate.js";
 
-const get = async (req, res) => {};
-const getId = async (req, res) => {};
-const post = async (req, res) => {};
-const postId = async (req, res) => {};
-const put = async (req, res) => {};
-const putId = async (req, res) => {};
-const del = async (req, res) => {};
-const delId = async (req, res) => {};
+export const get = async (req, res) => {
+    res.json(await db.readUser());
+};
 
-export default {
-    get,
-    getId,
-    post,
-    postId,
-    put,
-    putId,
-    del,
-    delId,
+export const getId = async (req, res) => {
+    const { id } = req.body;
+    res.json(await db.readUser(id));
+};
+
+export const post = async (req, res) => {
+    const { username, password } = req.body;
+    res.json(await db.createUser(username, await hashPassword(password)));
+};
+
+export const putId = async (req, res) => {
+    const { id, password, isAuthor, isAdmin } = req.body;
+    res.json(await db.updateUser(id, password, isAuthor, isAdmin));
+};
+
+export const delId = async (req, res) => {
+    const { id } = req.body;
+    res.json(await db.deleteUser(id));
 };

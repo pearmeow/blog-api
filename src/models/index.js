@@ -1,3 +1,3 @@
-import db from "./queries.js";
+import * as db from "./queries.js";
 
 export default db;

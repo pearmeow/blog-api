@@ -1,5 +1,5 @@
-import post from "./post.js";
-import comment from "./comment.js";
-import user from "./user.js";
+import * as post from "./post.js";
+import * as comment from "./comment.js";
+import * as user from "./user.js";
 
 export { post, comment, user };

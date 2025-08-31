@@ -1,21 +1,24 @@
 import db from "../models/index.js";
 
-const get = async (req, res) => {};
-const getId = async (req, res) => {};
-const post = async (req, res) => {};
-const postId = async (req, res) => {};
-const put = async (req, res) => {};
-const putId = async (req, res) => {};
-const del = async (req, res) => {};
-const delId = async (req, res) => {};
+export const get = async (req, res) => {
+    res.json(await db.readComment());
+};
 
-export default {
-    get,
-    getId,
-    post,
-    postId,
-    put,
-    putId,
-    del,
-    delId,
+export const getId = async (req, res) => {
+    res.json(await db.readComment(req.params.id));
+};
+
+export const post = async (req, res) => {
+    const { postId, authorId, text } = req.body;
+    res.json(await db.createComment(postId, authorId, text));
+};
+
+export const putId = async (req, res) => {
+    const { id, text, date } = req.body;
+    res.json(await db.updateComment(id, text, date));
+};
+
+export const delId = async (req, res) => {
+    const { id } = req.body;
+    res.json(await db.deleteComment(id));
 };
