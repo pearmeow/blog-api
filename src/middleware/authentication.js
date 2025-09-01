@@ -3,7 +3,7 @@ import { Strategy, ExtractJwt } from "passport-jwt";
 import db from "../models/index.js";
 
 const options = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken,
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.JWT_SECRET,
     algorithms: ["HS256"],
 };
