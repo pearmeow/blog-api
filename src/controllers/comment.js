@@ -1,5 +1,6 @@
 import db from "../models/index.js";
 import * as validator from "../middleware/validator.js";
+import passport from "passport";
 
 // gets comments in a post, not all comments
 export const get = [
@@ -20,6 +21,7 @@ export const getId = [
 
 // requires being at least a user
 export const post = [
+    passport.authenticate("jwt", { session: false }),
     validator.idParamFactory("postId"),
     validator.textBodyFactory("text", "Comment", 1, 500),
     validator.validateResults,
