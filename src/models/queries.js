@@ -12,8 +12,17 @@ export const createPost = async (authorId, title, text, date, published) => {
     });
 };
 
-export const readPost = async (id) => {
+export const readPost = async () => {
     return await client.post.findMany({
+        include: {
+            comments: true,
+            author: true,
+        },
+    });
+};
+
+export const readPostById = async (id) => {
+    return await client.post.findUnique({
         where: {
             id,
         },
@@ -24,7 +33,7 @@ export const readPost = async (id) => {
     });
 };
 
-export const updatePost = async (id, title, text, date, published) => {
+export const updatePost = async ({ id, title, text, date, published }) => {
     return await client.post.update({
         where: {
             id,
@@ -68,14 +77,25 @@ export const readComment = async (id, postId) => {
     });
 };
 
-export const updateComment = async (id, text, date) => {
+export const readCommentById = async (id) => {
+    return await client.comment.findUnique({
+        where: {
+            id,
+        },
+        include: {
+            author: true,
+        },
+    });
+};
+
+export const updateComment = async (id, text) => {
     return await client.comment.update({
         where: {
             id,
         },
         data: {
             text,
-            date,
+            date: new Date(),
             edited: true,
         },
     });
@@ -114,6 +134,14 @@ export const readUser = async (id) => {
         include: {
             posts: true,
             comments: true,
+        },
+    });
+};
+
+export const readUserById = async (id) => {
+    return await client.user.findUnique({
+        where: {
+            id,
         },
     });
 };
