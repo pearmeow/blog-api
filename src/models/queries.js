@@ -6,7 +6,7 @@ export const createPost = async (authorId, title, text, date, published) => {
             authorId,
             title,
             text,
-            date,
+            date: new Date(),
             published,
         },
     });
