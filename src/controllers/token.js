@@ -6,12 +6,15 @@ export const post = [
     async (req, res) => {
         const { username, password } = req.body;
         const user = await db.readUserFromUsername(username);
+        if (!user) {
+            return res.status(401).end();
+        }
         if (!(await validPassword(password, user.password))) {
-            return res.status(401).json({});
+            return res.status(401).end();
         }
         const options = {
             algorithm: "HS256",
-            expiresIn: "60s",
+            expiresIn: "60m",
         };
         jwt.sign(
             { id: user.id, isAuthor: user.isAuthor, isAdmin: user.isAdmin },
@@ -19,7 +22,7 @@ export const post = [
             options,
             function (err, token) {
                 if (err) {
-                    return res.status(401).json({});
+                    return res.status(401).end();
                 }
                 return res.json(token);
             },
