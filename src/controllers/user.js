@@ -3,13 +3,17 @@ import { hashPassword } from "../utils/authenticate.js";
 import * as validator from "../middleware/validator.js";
 import passport from "passport";
 
-// TODO: Figure out if this is useless
-export const get = async (req, res) => {
-    res.json(await db.readUser());
-};
+export const get = [
+    passport.authenticate("jwt", { session: false }),
+    validator.isAdmin,
+    async (req, res) => {
+        res.json(await db.readUser());
+    },
+];
 
-// TODO: Figure out if this is useless
 export const getId = [
+    passport.authenticate("jwt", { session: false }),
+    validator.isAdmin,
     validator.idParamFactory("userId"),
     validator.validateResults,
     async (req, res) => {
@@ -21,6 +25,7 @@ export const getId = [
 export const post = [
     validator.username,
     validator.password,
+    validator.confirm,
     validator.validateResults,
     async (req, res) => {
         const { username, password } = req.body;
@@ -28,30 +33,31 @@ export const post = [
     },
 ];
 
-// TODO: validate passcodes for isAuthor and isAdmin to promote user status
-// must be logged in to use this route
-// maybe separate out password or make it unchangeable so it's not
-// coupled with privileges
 export const putId = [
     passport.authenticate("jwt", { session: false }),
     validator.idParamFactory("userId"),
-    validator.password,
-    validator.boolParamFactory("isAuthor", "Author status"),
-    validator.boolParamFactory("isAdmin", "Admin status"),
+    validator.boolParamFactory("isAuthor", "Author status").optional(),
+    validator.boolParamFactory("isAdmin", "Admin status").optional(),
     validator.validateResults,
     async (req, res) => {
         const { userId } = req.params;
-        const { password, isAuthor, isAdmin } = req.body;
-        res.json(await db.updateUser(userId, password, isAuthor, isAdmin));
+        const { isAuthor, isAdmin } = req.body;
+        // TODO: add keys to validate if user can promote to Author/Admin
+        // For now any user can promote themselves which is pretty dangerous
+        // No need for password (!also dangerous!) because of jwt
+        res.json(await db.updateUser({ userId, isAuthor, isAdmin }));
     },
 ];
 
-// TODO: validate if user is admin so deleting is allowed
 export const delId = [
     passport.authenticate("jwt", { session: false }),
     validator.idParamFactory("userId"),
+    validator.validateResults,
     async (req, res) => {
         const { userId } = req.params;
-        res.json(await db.deleteUser(userId));
+        if (req.user.id === userId || req.user.isAdmin) {
+            return res.json(await db.deleteUser(userId));
+        }
+        return res.status(401).end();
     },
 ];
