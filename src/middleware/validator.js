@@ -16,10 +16,8 @@ export const textBodyFactory = (fieldName, actualName, min, max) => {
 
 export const date = body("date").isDate().withMessage("Date must be a date");
 
-export const boolParamFactory = (fieldName, actualName) => {
-    return body(fieldName)
-        .isBoolean({ strict: true })
-        .withMessage(`${actualName} must be true or false`);
+export const boolParamFactory = (fieldName) => {
+    return body(fieldName).toBoolean();
 };
 
 export const username = body("username")
