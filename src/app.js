@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
-import * as routes from "./routes/index.js";
 import "dotenv/config";
+import "./middleware/authentication.js";
+import * as routes from "./routes/index.js";
 
 const app = express();
 
@@ -21,6 +22,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/posts", routes.post);
 app.use("/users", routes.user);
+app.use("/tokens", routes.token);
+app.use("/{*splat}", (req, res) => res.status(404).send());
 
 const PORT = 3000;
 
