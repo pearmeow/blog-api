@@ -11,10 +11,10 @@ export const post = [
         }
         const options = {
             algorithm: "HS256",
-            expiresIn: "30s",
+            expiresIn: "60s",
         };
         jwt.sign(
-            { id: user.id },
+            { id: user.id, isAuthor: user.isAuthor, isAdmin: user.isAdmin },
             process.env.JWT_SECRET,
             options,
             function (err, token) {
