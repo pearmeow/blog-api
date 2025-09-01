@@ -33,31 +33,44 @@ export const username = body("username")
     .isLength({ min: 1, max: 32 })
     .withMessage("Username must be from 8 to 32 characters long");
 
-export const password = [
-    body("password")
-        .custom((value) => {
-            if (/ /.test(value)) {
-                throw Error();
-            }
-            return true;
-        })
-        .withMessage("Password must not contain spaces")
-        .isLength({ min: 8, max: 32 })
-        .withMessage("Password must be from 8 to 32 characters long"),
-    body("confirm")
-        .custom((value, { req }) => {
-            if (req.body.password !== value) {
-                throw Error;
-            }
-            return true;
-        })
-        .withMessage("Passwords must match"),
-];
+export const password = body("password")
+    .custom((value) => {
+        if (/ /.test(value)) {
+            throw Error();
+        }
+        return true;
+    })
+    .withMessage("Password must not contain spaces")
+    .isLength({ min: 8, max: 32 })
+    .withMessage("Password must be from 8 to 32 characters long");
+
+export const confirm = body("confirm")
+    .custom((value, { req }) => {
+        if (req.body.password !== value) {
+            throw Error;
+        }
+        return true;
+    })
+    .withMessage("Passwords must match");
 
 export const validateResults = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json(errors.array());
+    }
+    next();
+};
+
+export const isAuthor = (req, res, next) => {
+    if (!req.user.isAuthor) {
+        return res.status(401).end();
+    }
+    next();
+};
+
+export const isAdmin = (req, res, next) => {
+    if (!req.user.isAdmin) {
+        return res.status(401).end();
     }
     next();
 };
