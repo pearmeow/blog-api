@@ -118,7 +118,7 @@ export const readUser = async (id) => {
     });
 };
 
-export const updateUser = async (id, password, isAuthor, isAdmin) => {
+export const updateUser = async ({ id, password, isAuthor, isAdmin }) => {
     return await client.user.update({
         where: {
             id,
