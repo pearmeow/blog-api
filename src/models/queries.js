@@ -98,6 +98,14 @@ export const createUser = async (username, password) => {
     });
 };
 
+export const readUserFromUsername = async (username) => {
+    return await client.user.findUnique({
+        where: {
+            username,
+        },
+    });
+};
+
 export const readUser = async (id) => {
     return await client.user.findMany({
         where: {

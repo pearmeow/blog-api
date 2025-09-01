@@ -5,7 +5,7 @@ import { validPassword } from "../utils/authenticate.js";
 export const post = [
     async (req, res) => {
         const { username, password } = req.body;
-        const user = await db.readUserFromCredentials(username);
+        const user = await db.readUserFromUsername(username);
         if (!(await validPassword(password, user.password))) {
             return res.status(401).json({});
         }
