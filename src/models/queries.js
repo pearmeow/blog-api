@@ -1,6 +1,6 @@
 import client from "./client.js";
 
-export const createPost = async (authorId, title, text, date, published) => {
+export const createPost = async (authorId, title, text, published) => {
     return await client.post.create({
         data: {
             authorId,
@@ -109,6 +109,53 @@ export const deleteComment = async (id) => {
     });
 };
 
+export const createAuthor = async (username, password) => {
+    return await client.author.create({
+        data: {
+            username,
+            password,
+        },
+    });
+};
+
+export const readAuthorFromUsername = async (username) => {
+    return await client.author.findUnique({
+        where: {
+            username,
+        },
+    });
+};
+
+export const readAuthorFromId = async (id) => {
+    return await client.author.findUnique({
+        where: {
+            id,
+        },
+        include: {
+            posts: true,
+        },
+    });
+};
+
+export const updateAuthor = async (id, password) => {
+    return await client.author.update({
+        where: {
+            id,
+        },
+        data: {
+            password,
+        },
+    });
+};
+
+export const deleteAuthor = async (id) => {
+    return await client.author.delete({
+        where: {
+            id,
+        },
+    });
+};
+
 export const createUser = async (username, password) => {
     return await client.user.create({
         data: {
@@ -132,7 +179,6 @@ export const readUser = async (id) => {
             id,
         },
         include: {
-            posts: true,
             comments: true,
         },
     });
@@ -146,15 +192,13 @@ export const readUserById = async (id) => {
     });
 };
 
-export const updateUser = async ({ id, password, isAuthor, isAdmin }) => {
+export const updateUser = async (id, password) => {
     return await client.user.update({
         where: {
             id,
         },
         data: {
             password,
-            isAuthor,
-            isAdmin,
         },
     });
 };
