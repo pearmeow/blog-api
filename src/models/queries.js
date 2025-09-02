@@ -33,7 +33,7 @@ export const readPostById = async (id) => {
     });
 };
 
-export const updatePost = async ({ id, title, text, date, published }) => {
+export const updatePost = async ({ id, title, text, published }) => {
     return await client.post.update({
         where: {
             id,
@@ -41,7 +41,7 @@ export const updatePost = async ({ id, title, text, date, published }) => {
         data: {
             title,
             text,
-            date,
+            date: new Date(),
             published,
         },
     });
