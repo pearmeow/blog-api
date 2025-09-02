@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { token } from "../controllers/index.js";
+import { authortoken, usertoken } from "../controllers/index.js";
 
 const router = Router();
 
-router.post("/", token.post);
+router.post("/users", usertoken.post);
+router.post("/authors", authortoken.post);
 
 export default router;
