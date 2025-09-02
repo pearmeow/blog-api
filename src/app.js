@@ -22,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/posts", routes.post);
 app.use("/users", routes.user);
+app.use("/authors", routes.author);
 app.use("/tokens", routes.token);
 app.use("/{*splat}", (req, res) => res.status(404).send());
 
