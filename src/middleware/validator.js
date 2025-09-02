@@ -3,7 +3,7 @@ import { body, param, validationResult } from "express-validator";
 export const idParamFactory = (fieldName) => {
     return param(fieldName)
         .isInt({ min: 1 })
-        .withMessage("Id must be an integer");
+        .withMessage("Id must be an integer greater than 1");
 };
 
 export const textBodyFactory = (fieldName, actualName, min, max) => {
