@@ -7,7 +7,7 @@ export const post = [
         const { username, password } = req.body;
         const user = await db.readUserFromUsername(username);
         if (!user) {
-            return res.status(401).end();
+            return res.status(404).end();
         }
         if (!(await validPassword(password, user.password))) {
             return res.status(401).end();
@@ -17,7 +17,7 @@ export const post = [
             expiresIn: "60m",
         };
         jwt.sign(
-            { id: user.id, isAuthor: user.isAuthor, isAdmin: user.isAdmin },
+            { id: user.id, type: "user" },
             process.env.JWT_SECRET,
             options,
             function (err, token) {
