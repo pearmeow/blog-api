@@ -14,7 +14,7 @@ model Post {
     text      String
     date      DateTime  @default(now())
     published Boolean   @default(false)
-    author    User      @relation(references: [id], fields: [authorId], onDelete: Cascade)
+    author    Author    @relation(references: [id], fields: [authorId], onDelete: Cascade)
     authorId  Int
     comments  Comment[]
 }
@@ -34,8 +34,12 @@ model User {
     id       Int       @id @default(autoincrement())
     username String    @unique
     password String
-    isAuthor Boolean   @default(false)
-    isAdmin  Boolean   @default(false)
-    posts    Post[]
     comments Comment[]
+}
+
+model Author {
+    id       Int    @id @default(autoincrement())
+    username String @unique
+    password String
+    posts    Post[]
 }
