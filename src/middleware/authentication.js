@@ -10,7 +10,12 @@ const options = {
 
 const verify = async (payload, done) => {
     try {
-        const user = await db.readUserById(payload.id);
+        let user;
+        if (payload.type === "user") {
+            user = await db.readUserById(payload.id);
+        } else if (payload.type === "author") {
+            user = await db.readAuthorFromId(payload.id);
+        }
         if (user) {
             done(null, user);
         } else {

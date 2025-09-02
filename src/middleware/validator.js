@@ -60,14 +60,7 @@ export const validateResults = (req, res, next) => {
 };
 
 export const isAuthor = (req, res, next) => {
-    if (!req.user.isAuthor) {
-        return res.status(401).end();
-    }
-    next();
-};
-
-export const isAdmin = (req, res, next) => {
-    if (!req.user.isAdmin) {
+    if (req.user.type === "user") {
         return res.status(401).end();
     }
     next();
