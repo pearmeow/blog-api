@@ -20,15 +20,13 @@ export const getId = [
 
 export const post = [
     passport.authenticate("jwt", { session: false }),
+    validator.isAuthor,
     validator.textBodyFactory("title", "Title", 1, 50),
     validator.textBodyFactory("text", "Post", 1),
     validator.boolParamFactory("published"),
     validator.validateResults,
     async (req, res) => {
-        const { id: userId, isAuthor, isAdmin } = req.user;
-        if (!isAuthor && !isAdmin) {
-            return res.status(401).end();
-        }
+        const { id: userId } = req.user;
         const { title, text, published } = req.body;
         res.json(await db.createPost(Number(userId), title, text, published));
     },
@@ -36,6 +34,7 @@ export const post = [
 
 export const putId = [
     passport.authenticate("jwt", { session: false }),
+    validator.isAuthor,
     validator.idParamFactory("postId"),
     validator.textBodyFactory("title", "Title", 1, 50),
     validator.textBodyFactory("text", "Post", 1),
@@ -65,16 +64,17 @@ export const putId = [
 
 export const delId = [
     passport.authenticate("jwt", { session: false }),
+    validator.isAuthor,
     validator.idParamFactory("postId"),
     validator.validateResults,
     async (req, res) => {
-        const { id: userId, isAdmin } = req.user;
+        const { id: userId } = req.user;
         const { postId } = req.params;
         const post = await db.readPostById(Number(postId));
         if (!post) {
             return res.status(404).end();
         }
-        if (post.authorId !== userId && !isAdmin) {
+        if (post.authorId !== userId) {
             return res.status(401).end();
         }
         res.json(await db.deletePost(Number(postId)));
