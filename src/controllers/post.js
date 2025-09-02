@@ -1,3 +1,4 @@
+import passport from "passport";
 import db from "../models/index.js";
 import * as validator from "../middleware/validator.js";
 
@@ -9,55 +10,73 @@ export const getId = [
     validator.idParamFactory("postId"),
     validator.validateResults,
     async (req, res) => {
-        res.json(await db.readPost(Number(req.params.postId)));
+        const post = await db.readPostById(Number(req.params.postId));
+        if (!post) {
+            return res.status(404).end();
+        }
+        res.json(post);
     },
 ];
 
-// TODO: validate author/admin status
 export const post = [
+    passport.authenticate("jwt", { session: false }),
     validator.textBodyFactory("title", "Title", 1, 50),
     validator.textBodyFactory("text", "Post", 1),
-    validator.date,
-    validator.boolParamFactory("published", "Published"),
+    validator.boolParamFactory("published"),
     validator.validateResults,
     async (req, res) => {
-        // TODO: get userId from user and authorize (check author status)
-        let userId = 1;
-        const { title, text, date, published } = req.body;
-        res.json(
-            await db.createPost(Number(userId), title, text, date, published),
-        );
+        const { id: userId, isAuthor, isAdmin } = req.user;
+        if (!isAuthor && !isAdmin) {
+            return res.status(401).end();
+        }
+        const { title, text, published } = req.body;
+        res.json(await db.createPost(Number(userId), title, text, published));
     },
 ];
 
-// TODO: validate user author status
 export const putId = [
+    passport.authenticate("jwt", { session: false }),
     validator.idParamFactory("postId"),
     validator.textBodyFactory("title", "Title", 1, 50),
     validator.textBodyFactory("text", "Post", 1),
-    validator.date,
-    validator.boolParamFactory("published", "Published"),
+    validator.boolParamFactory("published"),
     validator.validateResults,
     async (req, res) => {
-        // TODO: check author status with userId and check post author to
-        // see if they match up
-        // authors can only edit their own posts
+        const { id: userId } = req.user;
         const { postId } = req.params;
-        const { title, text, date, published } = req.body;
+        const post = await db.readPostById(Number(postId));
+        if (!post) {
+            return res.status(404).end();
+        }
+        if (post.authorId !== userId) {
+            return res.status(401).end();
+        }
+        const { title, text, published } = req.body;
         res.json(
-            await db.updatePost(Number(postId), title, text, date, published),
+            await db.updatePost({
+                id: Number(postId),
+                title,
+                text,
+                published,
+            }),
         );
     },
 ];
 
-// TODO: validate user author/admin status
 export const delId = [
+    passport.authenticate("jwt", { session: false }),
     validator.idParamFactory("postId"),
     validator.validateResults,
     async (req, res) => {
-        // TODO: validate userId with post's author
-        // or if user is an admin
+        const { id: userId, isAdmin } = req.user;
         const { postId } = req.params;
+        const post = await db.readPostById(Number(postId));
+        if (!post) {
+            return res.status(404).end();
+        }
+        if (post.authorId !== userId && !isAdmin) {
+            return res.status(401).end();
+        }
         res.json(await db.deletePost(Number(postId)));
     },
 ];
