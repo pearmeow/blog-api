@@ -118,6 +118,10 @@ export const createAuthor = async (username, password) => {
     });
 };
 
+export const readAuthor = async () => {
+    return await client.author.findMany();
+};
+
 export const readAuthorFromUsername = async (username) => {
     return await client.author.findUnique({
         where: {
