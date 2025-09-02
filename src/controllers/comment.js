@@ -74,13 +74,13 @@ export const delId = [
     validator.idParamFactory("commentId"),
     validator.validateResults,
     async (req, res) => {
-        const { id: authorId, isAdmin } = req.user;
+        const { id: authorId, type: type } = req.user;
         const { postId, commentId } = req.params;
         const comment = await db.readComment(Number(commentId), Number(postId));
         if (comment.length === 0) {
             return res.status(404).end();
         }
-        if (comment[0].authorId !== authorId && !isAdmin) {
+        if (comment[0].authorId !== authorId && type !== "author") {
             return res.status(401).end();
         }
         res.json(await db.deleteComment(Number(commentId)));
