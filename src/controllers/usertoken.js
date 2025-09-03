@@ -10,7 +10,7 @@ export const post = [
         const { username, password } = req.body;
         const user = await db.readUserFromUsername(username);
         if (!user) {
-            return res.status(404).end();
+            return res.status(401).end();
         }
         if (!(await validPassword(password, user.password))) {
             return res.status(401).end();
