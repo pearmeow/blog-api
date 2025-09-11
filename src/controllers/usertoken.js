@@ -6,6 +6,7 @@ import { validPassword } from "../utils/authenticate.js";
 export const post = [
     validator.username,
     validator.password,
+    validator.validateResults,
     async (req, res) => {
         const { username, password } = req.body;
         const user = await db.readUserFromUsername(username);
