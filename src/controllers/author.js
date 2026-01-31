@@ -18,7 +18,7 @@ export const getId = [
     validator.validateResults,
     async (req, res) => {
         const { authorId } = req.params;
-        res.json(await db.readAuthorById(Number(authorId)));
+        res.json(await db.readAuthorFromId(Number(authorId)));
     },
 ];
 
@@ -31,6 +31,10 @@ export const post = [
         const { username, password, authorcode } = req.body;
         if (authorcode !== process.env.AUTHOR_CODE) {
             return res.status(401).end();
+        }
+        // author already exists
+        if ((await db.readAuthorFromUsername(username)) != null) {
+            return res.status(401).json([{ msg: "Author already exists" }]);
         }
         res.json(await db.createAuthor(username, await hashPassword(password)));
     },
