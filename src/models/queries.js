@@ -44,7 +44,7 @@ export const updatePost = async ({ id, title, text, published }) => {
         data: {
             title,
             text,
-            date: new Date(),
+            date: published ? new Date() : undefined,
             published,
         },
     });
