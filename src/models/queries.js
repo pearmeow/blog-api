@@ -18,6 +18,9 @@ export const readPost = async () => {
             comments: true,
             author: true,
         },
+        orderBy: {
+            date: "desc",
+        },
     });
 };
 
