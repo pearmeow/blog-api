@@ -14,6 +14,7 @@ export const getId = [
         if (!post) {
             return res.status(404).end();
         }
+        delete post.author.password;
         res.json(post);
     },
 ];
