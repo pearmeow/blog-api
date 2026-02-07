@@ -60,7 +60,7 @@ export const validateResults = (req, res, next) => {
 };
 
 export const isAuthor = (req, res, next) => {
-    if (req.user.type === "user") {
+    if (req.user.type !== "author") {
         return res.status(401).end();
     }
     next();

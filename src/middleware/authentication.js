@@ -13,8 +13,10 @@ const verify = async (payload, done) => {
         let user;
         if (payload.type === "user") {
             user = await db.readUserById(payload.id);
+            user.type = "user";
         } else if (payload.type === "author") {
             user = await db.readAuthorFromId(payload.id);
+            user.type = "author";
         }
         if (user) {
             done(null, user);
