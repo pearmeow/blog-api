@@ -30,7 +30,17 @@ export const readPostById = async (id) => {
             id,
         },
         include: {
-            comments: true,
+            comments: {
+                select: {
+                    id: true,
+                    text: true,
+                    author: {
+                        select: {
+                            username: true,
+                        },
+                    },
+                },
+            },
             author: true,
         },
     });
