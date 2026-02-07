@@ -12,6 +12,21 @@ export const createPost = async (authorId, title, text, published) => {
     });
 };
 
+export const readPostProtected = async () => {
+    return await client.post.findMany({
+        include: {
+            comments: true,
+            author: true,
+        },
+        where: {
+            published: false,
+        },
+        orderBy: {
+            date: "desc",
+        },
+    });
+};
+
 export const readPost = async () => {
     return await client.post.findMany({
         include: {

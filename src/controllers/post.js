@@ -2,9 +2,15 @@ import passport from "passport";
 import db from "../models/index.js";
 import * as validator from "../middleware/validator.js";
 
-export const get = async (req, res) => {
-    res.json(await db.readPost());
-};
+export const get = [
+    passport.authenticate("jwt", { session: false }),
+    async (req, res) => {
+        if (req.type.user !== "author") {
+            return res.json(await db.readPostProtected());
+        }
+        return res.json(await db.readPost());
+    },
+];
 
 export const getId = [
     validator.idParamFactory("postId"),
