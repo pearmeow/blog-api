@@ -37,6 +37,7 @@ export const readPostById = async (id) => {
                     author: {
                         select: {
                             username: true,
+                            id: true,
                         },
                     },
                 },
