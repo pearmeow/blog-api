@@ -5,10 +5,10 @@ import * as validator from "../middleware/validator.js";
 export const get = [
     passport.authenticate("jwt", { session: false }),
     async (req, res) => {
-        if (req.type.user !== "author") {
-            return res.json(await db.readPostProtected());
+        if (req.user.type === "author") {
+            return res.json(await db.readPost());
         }
-        return res.json(await db.readPost());
+        return res.json(await db.readPostProtected());
     },
 ];
 

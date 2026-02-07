@@ -19,7 +19,7 @@ export const readPostProtected = async () => {
             author: true,
         },
         where: {
-            published: false,
+            published: true,
         },
         orderBy: {
             date: "desc",
