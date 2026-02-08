@@ -13,10 +13,14 @@ export const get = [
 ];
 
 export const getId = [
+    passport.authenticate("jwt", { session: false }),
     validator.idParamFactory("postId"),
     validator.validateResults,
     async (req, res) => {
         const post = await db.readPostById(Number(req.params.postId));
+        if (req.user.type !== "author" && !post.published) {
+            return res.status(404).end();
+        }
         if (!post) {
             return res.status(404).end();
         }
