@@ -29,6 +29,10 @@ export const post = [
     validator.validateResults,
     async (req, res) => {
         const { username, password } = req.body;
+        let userExists = await db.readUserFromUsername(username);
+        if (userExists) {
+            return res.status(400).json([{ msg: "User already exists" }]);
+        }
         res.json(await db.createUser(username, await hashPassword(password)));
     },
 ];
