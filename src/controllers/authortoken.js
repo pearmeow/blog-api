@@ -12,9 +12,9 @@ export const post = [
         if (!(await validPassword(password, author.password))) {
             return res.status(401).end();
         }
-        // TODO: Add expiration when pushing to production
         const options = {
             algorithm: "HS256",
+            expiresIn: "10h",
         };
         jwt.sign(
             { id: author.id, type: "author" },

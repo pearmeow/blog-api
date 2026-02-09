@@ -12,9 +12,9 @@ export const post = [
         if (!(await validPassword(password, user.password))) {
             return res.status(401).end();
         }
-        // TODO: Add back expiration time
         const options = {
             algorithm: "HS256",
+            expiresIn: "10h",
         };
         jwt.sign(
             { id: user.id, type: "user" },
