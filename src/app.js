@@ -26,7 +26,7 @@ app.use("/authors", routes.author);
 app.use("/tokens", routes.token);
 app.use("/{*splat}", (req, res) => res.status(404).send());
 
-const PORT = 3000;
+const PORT = process.env.PORT;
 
 app.listen(PORT, (error) => {
     if (error) {
