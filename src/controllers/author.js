@@ -30,7 +30,7 @@ export const post = [
     async (req, res) => {
         const { username, password, authorcode } = req.body;
         if (authorcode !== process.env.AUTHOR_CODE) {
-            return res.status(401).end();
+            return res.status(401).json([{ msg: "Author code is wrong" }]);
         }
         // author already exists
         if ((await db.readAuthorFromUsername(username)) != null) {
