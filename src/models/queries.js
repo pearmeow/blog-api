@@ -234,9 +234,6 @@ export const readUserFromUsername = async (username) => {
         where: {
             username,
         },
-        omit: {
-            password: true,
-        },
     });
 };
 
