@@ -1,6 +1,6 @@
 {
-  "name": "node project template",
-  "version": "0.0.0",
+  "name": "Blog API",
+  "version": "1.0.0",
   "description": "node project template",
   "main": "./src/app.js",
   "type": "module",
