@@ -3,8 +3,11 @@ Blog API
 
 An API meant to handle requests from the frontend made with NodeJS, Express, PostgreSQL, and Prisma.  
 Most routes require a JWT given from one of the token routes. Some of the routes are unused in the frontend.  
-The actual frontend page is located [here](https://pearmeow-blog-frontend.netlify.app/).  
-Visit the githubs for the frontend [here](https://github.com/pearmeow/blog-frontend) and admin page [here](https://github.com/pearmeow/blog-admin).  
+Link to the actual frontend page [here](https://pearmeow-blog-frontend.netlify.app/).  
+Frontend github [here](https://github.com/pearmeow/blog-frontend)  
+Admin page github [here](https://github.com/pearmeow/blog-admin).  
+  
+This project was made without genAI.
 
 Features
 --------
@@ -59,7 +62,7 @@ Returns JWT for authors or users
 
 Known Limitations
 -----------------
-It's probably got some security flaws. This project was made for the sake of learning  
+It's probably got some security flaws. This project was made for the sake of learning.  
 
 Credits
 -------
