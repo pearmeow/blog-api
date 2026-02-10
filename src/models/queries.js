@@ -16,7 +16,11 @@ export const readPostProtected = async () => {
     return await client.post.findMany({
         include: {
             comments: true,
-            author: true,
+            author: {
+                omit: {
+                    password: true,
+                },
+            },
         },
         where: {
             published: true,
@@ -31,7 +35,11 @@ export const readPost = async () => {
     return await client.post.findMany({
         include: {
             comments: true,
-            author: true,
+            author: {
+                omit: {
+                    password: true,
+                },
+            },
         },
         orderBy: {
             date: "desc",
@@ -101,7 +109,11 @@ export const readComment = async (id, postId) => {
             postId,
         },
         include: {
-            author: true,
+            author: {
+                omit: {
+                    password: true,
+                },
+            },
         },
     });
 };
@@ -112,7 +124,11 @@ export const readCommentById = async (id) => {
             id,
         },
         include: {
-            author: true,
+            author: {
+                omit: {
+                    password: true,
+                },
+            },
         },
     });
 };
@@ -144,6 +160,9 @@ export const createAuthor = async (username, password) => {
             username,
             password,
         },
+        omit: {
+            password: true,
+        },
     });
 };
 
@@ -167,6 +186,9 @@ export const readAuthorFromId = async (id) => {
         include: {
             posts: true,
         },
+        omit: {
+            password: true,
+        },
     });
 };
 
@@ -178,6 +200,9 @@ export const updateAuthor = async (id, password) => {
         data: {
             password,
         },
+        omit: {
+            password: true,
+        },
     });
 };
 
@@ -185,6 +210,9 @@ export const deleteAuthor = async (id) => {
     return await client.author.delete({
         where: {
             id,
+        },
+        omit: {
+            password: true,
         },
     });
 };
@@ -195,6 +223,9 @@ export const createUser = async (username, password) => {
             username,
             password,
         },
+        omit: {
+            password: true,
+        },
     });
 };
 
@@ -202,6 +233,9 @@ export const readUserFromUsername = async (username) => {
     return await client.user.findUnique({
         where: {
             username,
+        },
+        omit: {
+            password: true,
         },
     });
 };
@@ -214,6 +248,9 @@ export const readUser = async (id) => {
         include: {
             comments: true,
         },
+        omit: {
+            password: true,
+        },
     });
 };
 
@@ -221,6 +258,9 @@ export const readUserById = async (id) => {
     return await client.user.findUnique({
         where: {
             id,
+        },
+        omit: {
+            password: true,
         },
     });
 };
@@ -233,6 +273,9 @@ export const updateUser = async (id, password) => {
         data: {
             password,
         },
+        omit: {
+            password: true,
+        },
     });
 };
 
@@ -240,6 +283,9 @@ export const deleteUser = async (id) => {
     return await client.user.delete({
         where: {
             id,
+        },
+        omit: {
+            password: true,
         },
     });
 };
